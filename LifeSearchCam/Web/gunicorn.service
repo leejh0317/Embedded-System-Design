@@ -1,0 +1,15 @@
+[Unit]
+Description=gunicorn daemon for /home/pi/flir_web_detection.py
+After=network.target
+
+[Service]
+User=pi
+Group=www-data
+RuntimeDirectory=gunicorn
+WorkingDirectory=/home/pi
+ExecStart=/usr/local/bin/gunicorn --bind=unix:/tmp/gunicorn.sock --threads=5 --workers=1 flir_web_detection:app
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+
+[Install]
+WantedBy=multi-user.target
